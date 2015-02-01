@@ -13,12 +13,49 @@
         - http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm
         - http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
         - http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
+
+    # apache
+    - name: be sure base is installed
+      yum: name={{ item }} state=installed enablerepo=remi,epel
+      with_items:
+        - gcc
+        - libyaml
+        - libyaml-devel
+
+    # apache
     - name: be sure httpd is installed
-      yum: name=httpd state=installed enablerepo=remi,epel
+      yum: name={{ item }} state=installed enablerepo=remi,epel
+      with_items:
+        - httpd
+        - httpd-devel
 
     - name: be sure httpd is running and enabled
       service: name=httpd state=running enabled=yes
 
+    # php
+    - name: be sure php is installed
+      yum: name={{ item }} state=installed enablerepo=remi,remi-php55,epel
+      with_items:
+        - php
+        - php-opcache
+        - php-devel
+        - php-mbstring
+        - php-mcrypt
+        - php-mysqlnd
+        - php-pecl-xdebug
+        - php-pecl-memcached
+        - php-pecl-apcu-devel
+        - php-pdo
+        - php-xml
+        - php-common
+        - php-cli
+        - php-process
+    - name: be sure php-pecl-yaml is installed
+      yum: name={{ item }} state=installed disablerepo=epel enablerepo=remi,remi-php55
+      with_items:
+          - php-pecl-yaml
+
+    # MySQL
     - name: be sure mysqld is installed
       yum: name={{ item }} state=installed enablerepo=mysql-*
       with_items:
