@@ -14,11 +14,12 @@
         - http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
         - http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
 
-    # apache
+    # base
     - name: be sure base is installed
       yum: name={{ item }} state=installed enablerepo=remi,epel
       with_items:
         - gcc
+        - telnet
         - libyaml
         - libyaml-devel
 
@@ -82,3 +83,14 @@
         priv=*.*:ALL
         state=present
       tags: mysqld
+
+    # memcached
+    - name: be sure memcached is installed
+      yum: name={{ item }} state=installed enablerepo=remi,epel
+      with_items:
+        - memcached
+        - memcached-devel
+      tags: memcached
+    - name: be sure memcached is running and enabled
+      service: name=memcached state=running enabled=yes
+      tags: memcached
