@@ -22,6 +22,7 @@
         - telnet
         - libyaml
         - libyaml-devel
+        - parted
 
     # apache
     - name: be sure httpd is installed
